@@ -17,6 +17,8 @@ const productSchema = new Schema({
     discountPrice: { type: Number},
     deleted: { type : Boolean, default: false},
 })
+//created virtual id so that fronted can get access of id 
+//we have created getter and setter for _id 
 
 const virtualId  = productSchema.virtual('id');
 virtualId.get(function(){
