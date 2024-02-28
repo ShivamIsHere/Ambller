@@ -23,7 +23,7 @@ exports.fetchAllProducts = async (req, res) => {
     // Its purpose is to retrieve the total count of products that match the specified conditions, which can be used for pagination purposes.
     // After applying all filter conditions, totalProductsQuery is executed with the count() method to count the total number of documents that match the specified conditions.
     let totalProductsQuery = Product.find({});
-  
+  //filtering products
     console.log(req.query.category);
   
     if (req.query.category) {
@@ -32,10 +32,54 @@ exports.fetchAllProducts = async (req, res) => {
         category:req.query.category,
       });
     }
-    if (req.query.brand) {
-      query = query.find({ brand:req.query.brand });
-      totalProductsQuery = totalProductsQuery.find({ brand:req.query.brand});
+    
+
+
+    if (req.query.color) {
+      query = query.find({ color:req.query.color });
+      totalProductsQuery = totalProductsQuery.find({ color:req.query.color});
     }
+
+
+    if (req.query.fabric) {
+      query = query.find({ fabric:req.query.fabric });
+      totalProductsQuery = totalProductsQuery.find({ fabric:req.query.fabric});
+    }
+
+
+    if (req.query.occasion) {
+      query = query.find({ occasion:req.query.occasion });
+      totalProductsQuery = totalProductsQuery.find({ occasion:req.query.occasion});
+    }
+
+
+    if (req.query.fit) {
+      query = query.find({ fit:req.query.fit });
+      totalProductsQuery = totalProductsQuery.find({ fit:req.query.fit});
+    }
+
+
+    if (req.query.sleeveType) {
+      query = query.find({ sleeveType:req.query.sleeveType });
+      totalProductsQuery = totalProductsQuery.find({ sleeveType:req.query.sleeveType});
+    }
+
+
+    if (req.query.neckType) {
+      query = query.find({ neckType:req.query.neckType });
+      totalProductsQuery = totalProductsQuery.find({ neckType:req.query.neckType});
+    }
+    if (req.query.gender) {
+      query = query.find({ gender:req.query.gender });
+      totalProductsQuery = totalProductsQuery.find({ gender:req.query.gender});
+    }
+    if (req.query.sizes) {
+      query = query.find({ sizes:req.query.sizes });
+      totalProductsQuery = totalProductsQuery.find({ sizes:req.query.sizes});
+    }
+
+
+    //sorting items
     if (req.query._sort && req.query._order) {
       query = query.sort({ [req.query._sort]: req.query._order });
     }

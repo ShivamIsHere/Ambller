@@ -17,7 +17,7 @@ main().catch(err=>console.log(err));
 
 
 async function main(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/Ambller');
+    await mongoose.connect('mongodb://127.0.0.1:27017/Ambler');
     console.log('database connected')
   
 }
@@ -26,6 +26,6 @@ server.get('/',(req,res)=>{
 })
 
 
-server.listen(8080,()=>{
+server.listen(4000,()=>{
     console.log('server started');
 })
