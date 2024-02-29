@@ -1,12 +1,9 @@
 const express = require('express');
+const { fetchUserById, updateUser } = require('../controller/User');
+
 const router = express.Router();
+//  /users is already added in base path
+router.get('/own', fetchUserById)
+      .patch('/:id', updateUser)
 
-const { updatePhoneNumber } = require('../controller/User');
-const { createUser, User } = require('../controller/Auth.js');
-
-// Route to create a new user
-// Define route handler for creating a new user
-router.post('/signIn', createUser);
-router.post('/updatePhoneNumber', updatePhoneNumber);
-
-exports.router =router;
+exports.router = router;

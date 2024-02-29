@@ -2,12 +2,14 @@ const { createProduct } = require('./controller/Product.js');
 const express= require('express');
 const server = express();
 const mongoose=require('mongoose');
-const productsRouters = require('./routes/Products.js');
-const categoriesRouters = require('./routes/Categories.js');
-const brandsRouters = require('./routes/Brands.js');
-const usersRouters = require('./routes/Users.js');
+const productsRouter = require('./routes/Products.js');
+const categoriesRouter = require('./routes/Categories.js');
+const brandsRouter = require('./routes/Brands.js');
+// const usersRouters = require('./routes/Userssample.js');
 const bodyParser=require('body-parser');
-const otpRouter = require('./routes/otpRouters.js');
+// const otpRouter = require('./routes/otpRouterssample.js');
+const usersRouter = require('./routes/Users.js');
+const authRouter = require('./routes/Auth.js');
 
 
 const cors = require('cors')
@@ -19,12 +21,14 @@ server.use(cors({
 server.use(bodyParser.json());
 //middlewares
 server.use(express.json()); 
-server.use('/products', productsRouters.router)
-server.use('/categories', categoriesRouters.router)
-server.use('/brands', brandsRouters.router)
-server.use('/users',usersRouters.router)
-server.use('/users',usersRouters.router)
-server.use('/login',otpRouter.router)
+server.use('/products', productsRouter.router)
+server.use('/categories', categoriesRouter.router)
+server.use('/brands', brandsRouter.router)
+server.use('/users', usersRouter.router);
+// server.use('/users',usersRouters.router)
+// server.use('/login',otpRouter.router)
+server.use('/auth', authRouter.router);
+
 
 
 
