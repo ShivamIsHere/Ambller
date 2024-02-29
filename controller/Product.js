@@ -106,5 +106,26 @@ exports.fetchAllProducts = async (req, res) => {
       res.status(400).json(err);
     }
   };
-
+//fetching product from admin side
+  exports.fetchProductById = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const product = await Product.findById(id);
+      res.status(200).json(product);
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  };
+  //updating product from admin side
+  exports.updateProduct = async (req, res) => {
+    const { id } = req.params;
+    try {
+      // new=true means we are showing latest data in place of original data
+      const product = await Product.findByIdAndUpdate(id, req.body, {new:true});
+      res.status(200).json(product);
+    } catch (err) {
+      res.status(400).json(err);
+    }
+  };
 

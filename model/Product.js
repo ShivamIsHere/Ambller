@@ -11,7 +11,10 @@ const productSchema = new Schema({
     stock: { type: Number, min:[0, 'Please Enter a valid Stock'], default:0},
     brand: { type : String, required: true},
     category: [{type: String, enum:[`Kids' T-shirts`,`Couples T-shirts`,`Women's T-shirts`,`Men's T-shirts`]}],
-    images:{ type : [String], required: true},
+    images: [{
+        mainImage: { type: String, required: true },
+        sides: [{ type: String, required: true }]
+    }],
     color: [{ type: String, enum: ['Beige','Black','Blue','Brown','Dark Blue','Dark Green','Gold','Green','Grey','Light Blue','Light Green','Maroon','Multicolor','Navy Blue','Orange','Pink','Purple','Red','Silver','White','Yellow']}],
     fabric: [{ type: String, enum: ['Modal','Linen Blend','Wool Blend','Poly Cotton','Nylon','Viscose Rayon','Cotton Blend','Elastane','Organic Cotton','Polyester','Pure Cotton']}],
     occasion:[{ type: String, enum: ['Beach Wear','Casual','Formal','Lounge Wear','Party','Sports']}],
