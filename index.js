@@ -7,7 +7,10 @@ const categoriesRouters = require('./routes/Categories.js');
 const brandsRouters = require('./routes/Brands.js');
 const cors = require('cors')
 
-server.use(cors())
+server.use(cors({
+    //expose headers exposes the pagination in frontend
+    exposedHeaders:['X-Total-Count']
+}))
 //middlewares
 server.use(express.json()); 
 server.use('/products', productsRouters.router)
