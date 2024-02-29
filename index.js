@@ -6,6 +6,9 @@ const productsRouters = require('./routes/Products.js');
 const categoriesRouters = require('./routes/Categories.js');
 const brandsRouters = require('./routes/Brands.js');
 const usersRouters = require('./routes/Users.js');
+const bodyParser=require('body-parser');
+const otpRouter = require('./routes/otpRouters.js');
+
 
 const cors = require('cors')
 
@@ -13,12 +16,15 @@ server.use(cors({
     //expose headers exposes the pagination in frontend
     exposedHeaders:['X-Total-Count']
 }))
+server.use(bodyParser.json());
 //middlewares
 server.use(express.json()); 
 server.use('/products', productsRouters.router)
 server.use('/categories', categoriesRouters.router)
 server.use('/brands', brandsRouters.router)
 server.use('/users',usersRouters.router)
+server.use('/users',usersRouters.router)
+server.use('/login',otpRouter.router)
 
 
 
