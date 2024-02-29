@@ -10,8 +10,16 @@ const userSchema = new Schema({
   name: { type: String },
   salt: Buffer,
   resetPasswordToken: { type: String, default:'' },
-  phoneNumber: { type: String, unique: true } // New field for phone number
-},{timestamps: true});
+  phoneNumber: { type: String, unique: true },
+  otp:{
+    type:String, required:true
+  },// New field for phone number
+createdAt:{
+  type:Date,
+  default:Date.now,
+  expires:300 //otp expires after 5 minutes(300 seconds)
+}
+});
 
 // Virtual field for ID
 const virtual = userSchema.virtual('id');
