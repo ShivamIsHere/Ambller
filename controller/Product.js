@@ -18,11 +18,11 @@ exports.fetchAllProducts = async (req, res) => {
     // pagination = {_page:1,_limit=10}
     
     
-    let query = Product.find({});
+    let query = Product.find({deleted:{$ne:true}});
     // totalProductsQuery is a query used to fetch all products from the database based on certain conditions, but without applying pagination limits. 
     // Its purpose is to retrieve the total count of products that match the specified conditions, which can be used for pagination purposes.
     // After applying all filter conditions, totalProductsQuery is executed with the count() method to count the total number of documents that match the specified conditions.
-    let totalProductsQuery = Product.find({});
+    let totalProductsQuery = Product.find({deleted:{$ne:true}});
   //filtering products
     console.log(req.query.category);
   
