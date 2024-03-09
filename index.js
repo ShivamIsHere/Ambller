@@ -50,6 +50,6 @@ server.get('/',(req,res)=>{
 })
 
 
-server.listen(4000,()=>{
+server.listen(8080,()=>{
     console.log('server started');
 })
