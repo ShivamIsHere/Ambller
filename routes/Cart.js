@@ -1,9 +1,11 @@
 const express = require('express');
-const { addToCart, fetchCartByUser } = require('../controller/Cart');
+const { addToCart, fetchCartByUser,deleteFromCart,updateCart } = require('../controller/Cart');
 
 const router = express.Router();
 
 router.post('/', addToCart)
-router.get('/', fetchCartByUser)
+.get('/', fetchCartByUser)
+.delete('/:id', deleteFromCart)
+.patch('/:id', updateCart)
 
 exports.router = router;
