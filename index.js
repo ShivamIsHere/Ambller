@@ -10,6 +10,7 @@ const bodyParser=require('body-parser');
 // const otpRouter = require('./routes/otpRouterssample.js');
 const usersRouter = require('./routes/Users.js');
 const authRouter = require('./routes/Auth.js');
+const cartRouter = require('./routes/Cart');
 
 
 const cors = require('cors')
@@ -28,6 +29,7 @@ server.use('/users', usersRouter.router);
 // server.use('/users',usersRouters.router)
 // server.use('/login',otpRouter.router)
 server.use('/auth', authRouter.router);
+server.use('/cart', cartRouter.router);
 
 
 
