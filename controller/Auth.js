@@ -20,13 +20,18 @@ exports.createUser = async (req, res) => {
         const user = new User({ ...req.body, password: hashedPassword, salt });
         const doc = await user.save();
 
-        req.login(sanitizeUser(doc), (err) => {  // this also calls serializer and adds to session
-          if (err) {
+req.login(sanitizeUser(doc), (err) => {
+          // this also calls serializer and adds to session
+            if (err) {
             res.status(400).json(err);
           } else {
             const token = jwt.sign(sanitizeUser(doc), SECRET_KEY);
-            res.status(201).json(token);
-          }
+            res.cookie('jwt', token, {
+              expires: new Date(Date.now() + 3600000),
+              httpOnly: true,
+            })
+            .status(201)
+            .json(token);          }
         });
       }
     );
@@ -36,26 +41,16 @@ exports.createUser = async (req, res) => {
 };
 
 exports.loginUser = async (req, res) => {
-  try {
-    const user = await User.findOne(
-      { email: req.body.email },
-    ).exec();
-    // TODO: this is just temporary, we will use strong password auth
-    console.log({user})
-    if (!user) {
-      res.status(401).json({ message: 'no such user email' });
-    } else if (user.password === req.body.password) {
-        // TODO: We will make addresses independent of login
-      res.status(200).json({id:user.id, role:user.role});
-    } else {
-      res.status(401).json({ message: 'invalid credentials' });
-    }
-  } catch (err) {
-    res.status(400).json(err);
-  }
-  res.json(req.user);
+  const user = req.user;
+  res
+    .cookie('jwt', user.token, {
+      expires: new Date(Date.now() + 3600000),
+      httpOnly: true,
+    })
+    .status(201)
+    .json({ id: user.id, role: user.role });
 };
 
 exports.checkUser = async (req, res) => {
-  res.json({status:'success',user: req.user});
+  res.json({ status: 'success', user: req.user });
 };

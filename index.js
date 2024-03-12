@@ -13,7 +13,8 @@ const authRouter = require('./routes/Auth.js');
 const cartRouter = require('./routes/Cart');
 const ordersRouter = require('./routes/Order');
 const { User } = require('./model/User');
-const { isAuth, sanitizeUser } = require('./services/common');
+const { isAuth, sanitizeUser, cookieExtractor } = require('./services/common');
+const cookieParser = require('cookie-parser');
 
 
 const cors = require('cors');
@@ -27,8 +28,10 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 
 const SECRET_KEY = 'SECRET_KEY';
 // JWT options
+
+
 const opts = {};
-opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+opts.jwtFromRequest = cookieExtractor;
 opts.secretOrKey = SECRET_KEY; // TODO: should not be in code;
 
 
@@ -49,6 +52,22 @@ server.use(
 
 server.use(bodyParser.json());
 //middlewares
+server.use(express.static('build'))
+server.use(cookieParser());
+server.use(
+  session({
+    secret: 'keyboard cat',
+    resave: false, // don't save session if unmodified
+    saveUninitialized: false, // don't create session until something stored
+  })
+);
+server.use(passport.authenticate('session'));
+server.use(
+  cors({
+    exposedHeaders: ['X-Total-Count'],
+  })
+);
+
 server.use(express.json()); 
 server.use('/products', isAuth(), productsRouter.router);
 // we can also use JWT token for client-only auth
@@ -62,11 +81,13 @@ server.use('/orders', isAuth(), ordersRouter.router);
 // Passport Strategies
 passport.use(
   'local',
-  new LocalStrategy(async function (username, password, done) {
-    // by default passport uses username
+  new LocalStrategy(
+    {usernameField:'email'},
+    async function (email, password, done) {
+          // by default passport uses username
     try {
-      const user = await User.findOne({ email: username });
-      console.log(username, password, user);
+      const user = await User.findOne({ email: email });
+      console.log(email, password, user);
       if (!user) {
         return done(null, false, { message: 'invalid credentials' }); // for safety
       }
@@ -81,7 +102,7 @@ passport.use(
             return done(null, false, { message: 'invalid credentials' });
           }
           const token = jwt.sign(sanitizeUser(user), SECRET_KEY);
-          done(null, token); // this lines sends to serializer
+          done(null, {token}); // this lines sends to serializer
         }
       );
     } catch (err) {
@@ -95,7 +116,7 @@ passport.use(
   new JwtStrategy(opts, async function (jwt_payload, done) {
     console.log({ jwt_payload });
     try {
-      const user = await User.findOne({ id: jwt_payload.sub });
+      const user = await User.findById(jwt_payload.id);
       if (user) {
         return done(null, sanitizeUser(user)); // this calls serializer
       } else {
